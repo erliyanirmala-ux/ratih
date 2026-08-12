@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GadgetStore Cute Edition ✨</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Quicksand:wght@500;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        body {
+            background-color: #fff0f5;
+            background-image: radial-gradient(#ffdeeb 20%, transparent 20%), radial-gradient(#ffdeeb 20%, transparent 20%);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            color: #6d4c41;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Fredoka', sans-serif;
+            color: #ff69b4;
+        }
+
+        /* Navigasi Utama */
+        .main-nav {
+            display: none;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.15);
+            margin-bottom: 25px;
+            gap: 15px;
+            border: 2px solid #ffb6c1;
+            backdrop-filter: blur(5px);
+            z-index: 10;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            padding: 8px 18px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #ff69b4;
+            cursor: pointer;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn.active, .nav-btn:hover {
+            background-color: #ffb6c1;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* Container Utama */
+        .page-container {
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .page {
+            display: none;
+            background: white;
+            border-radius: 30px;
+            padding: 35px;
+            box-shadow: 0 15px 35px rgba(255, 182, 193, 0.3);
+            border: 4px dashed #ffb6c1;
+            position: relative;
+            animation: popIn 0.4s ease-out forwards;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .page::before {
+            content: '💖 ✨ 🎀';
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.96); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Form Input & Pilihan Role */
+        .role-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .role-btn {
+            padding: 12px;
+            border: 2px solid #ffe4e1;
+            background: white;
+            border-radius: 15px;
+            font-weight: 700;
+            color: #ff69b4;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .role-btn.selected {
+            background: #ffb6c1;
+            color: white;
+            border-color: #ffb6c1;
+        }
+
+        .input-cute {
+            width: 100%;
+            padding: 14px 20px;
+            border: 2.5px solid #ffe4e1;
+            border-radius: 20px;
+            font-size: 1rem;
+            color: #6d4c41;
+            background-color: #fff9fa;
+            outline: none;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .input-cute:focus {
+            border-color: #ff69b4;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.2);
+        }
+
+        .btn-cute {
+            background: linear-gradient(135deg, #ff99c8 0%, #ff69b4 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-cute:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.4);
+        }
+
+        .btn-danger { background: #ff4d6d; }
+        .form-group-cute { margin-bottom: 20px; }
+        .form-group-cute label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 0.95rem; color: #ff69b4; }
+
+        /* LOGIN STYLE */
+        .login-wrapper { max-width: 400px; margin: 0 auto; text-align: center; }
+        .avatar-box { width: 100px; height: 100px; background-color: #ffe4e1; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 3rem; border: 3px solid #ffb6c1; }
+
+        /* CATALOG STYLE */
+        .catalog-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media (min-width: 580px) { .catalog-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 900px) { .catalog-grid { grid-template-columns: repeat(3, 1fr); } }
+
+        .product-card { background: #fffdfd; border: 2px solid #ffe4e1; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s; cursor: pointer; }
+        .product-card:hover { transform: translateY(-4px); }
+        .product-img { width: 100%; height: 180px; object-fit: cover; border-bottom: 2px solid #ffe4e1; }
+        .product-info { padding: 15px; display: flex; flex-direction: column; flex-grow: 1; }
+        .product-price { font-size: 1.1rem; font-weight: 700; color: #ff69b4; margin: 5px 0 12px 0; }
+
+        /* FLOATING CART BUTTON */
+        .floating-cart-btn {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #ff99c8 0%, #ff69b4 100%);
+            color: white;
+            border: 4px solid white;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            font-size: 1.8rem;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(255, 105, 180, 0.4);
+            transition: all 0.3s ease;
+            z-index: 99;
+        }
+        .floating-cart-btn:hover { transform: scale(1.1); }
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4d6d;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 20px;
+            border: 2px solid white;
+        }
+
+        /* POPUP MODAL UMUM */
+        .cute-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        .cute-modal {
+            background: white;
+            width: 90%;
+            max-width: 480px;
+            border-radius: 35px;
+            padding: 25px;
+            border: 4px dashed #ffb6c1;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            animation: popIn 0.3s ease-out;
+            position: relative;
+        }
+        .close-modal-btn {
+            position: absolute;
+            top: 20px; right: 20px;
+            background: #ffe4e1;
+            border: none; color: #ff69b4;
+            width: 30px; height: 30px;
+            border-radius: 50%; font-weight: bold;
+            cursor: pointer;
+            z-index: 5;
+        }
+
+        /* DETAIL PRODUK VIDEO & DESC */
+        .video-container { width: 100%; border-radius: 20px; overflow: hidden; border: 2.5px solid #ffe4e1; background: #000; margin-bottom: 15px; aspect-ratio: 16/9; }
+        .video-container video { width: 100%; height: 100%; object-fit: cover; }
+        .product-desc-text { font-size: 0.9rem; color: #7d6660; line-height: 1.5; margin: 10px 0 20px 0; background: #fff5f7; padding: 15px; border-radius: 15px; border: 1px dashed #ffb6c1; }
+
+        .checkout-summary { background-color: #fff5f7; border-radius: 20px; padding: 20px; border: 2px dashed #ffb6c1; margin-top: 15px; }
+        .cart-list { max-height: 220px; overflow-y: auto; margin-bottom: 15px; padding-right: 5px; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; background: white; padding: 12px; border-radius: 15px; margin-bottom: 8px; border: 1px solid #ffe4e1; font-size: 0.85rem; }
+        .cart-item-controls button { background: #ffb6c1; border: none; color: white; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; font-weight: bold; }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9rem; }
+        .summary-total { border-top: 2px solid #ffb6c1; padding-top: 10px; margin-top: 10px; font-weight: 700; color: #ff69b4; font-size: 1.1rem; }
+
+        /* ADMIN STYLE */
+        .admin-grid { display: grid; grid-template-columns: 1fr; gap: 30px; }
+        @media (min-width: 768px) { .admin-grid { grid-template-columns: 1fr 1.3fr; } }
+        .item-row { display: flex; align-items: center; justify-content: space-between; background: #fffdfd; padding: 12px; border-radius: 18px; border: 2px solid #ffe4e1; margin-bottom: 10px; }
+        .item-details { display: flex; align-items: center; gap: 15px; }
+        .item-img { width: 50px; height: 50px; border-radius: 10px; object-fit: cover; border: 2px solid #ffb6c1; }
+        .history-list { max-height: 250px; overflow-y: auto; background: #fff9fa; padding: 15px; border-radius: 20px; border: 1px solid #ffe4e1; }
+        .history-item { background: white; padding: 10px; border-radius: 12px; margin-bottom: 8px; border-left: 4px solid #ff69b4; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+
+    <!-- Bar Navigasi Utama -->
+    <div id="navigationBar" class="main-nav">
+        <button id="navBtnCustomer" class="nav-btn active" onclick="switchPage('customer', this)">🛍️ Halaman Pelanggan</button>
+        <button id="navBtnAdmin" class="nav-btn" onclick="switchPage('admin', this)">🎀 Panel Admin</button>
+        <button class="nav-btn" onclick="logout()" style="color: #ff4d6d;">🚪 Logout</button>
+    </div>
+
+    <!-- TAMPILAN IKON KERANJANG MELAYANG -->
+    <button id="floatingCart" class="floating-cart-btn" onclick="toggleCartModal(true)">
+        🛒 <span class="cart-badge" id="cartBadgeCount">0</span>
+    </button>
+
+    <!-- 1. POPUP MODAL KERANJANG BELANJA -->
+    <div id="cartModalOverlay" class="cute-modal-overlay" onclick="toggleCartModal(false)">
+        <div class="cute-modal" onclick="event.stopPropagation()">
+            <button class="close-modal-btn" onclick="toggleCartModal(false)">✕</button>
+            <h3 style="margin-bottom: 15px; font-size: 1.3rem;">🛒 Keranjang Belanja Anda</h3>
+            
+            <div class="cart-list" id="cartContainer">
+                <p style="text-align:center; color:#a1887f; font-size:0.9rem; padding:20px;">Keranjangmu masih kosong 🌸</p>
+            </div>
+            
+            <div class="checkout-summary">
+                <div class="summary-row"><span>Subtotal Produk</span><strong id="subtotalPrice">Rp 0</strong></div>
+                <div class="summary-row"><span>Biaya Proteksi Gemas ✨</span><strong id="protectionFee">Rp 0</strong></div>
+                <div class="summary-row summary-total"><span>Total Tagihan</span><span id="totalInvoice">Rp 0</span></div>
+                <button class="btn-cute" style="width: 100%; font-size: 1rem; padding: 12px; margin-top: 15px;" onclick="processPayment()">Bayar Sekarang 🍓</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. POPUP MODAL DETAIL PRODUK (VIDEO & DESKRIPSI) -->
+    <div id="detailModalOverlay" class="cute-modal-overlay" onclick="toggleDetailModal(false)">
+        <div class="cute-modal" onclick="event.stopPropagation()">
+            <button class="close-modal-btn" onclick="toggleDetailModal(false)">✕</button>
+            <h3 id="modalProdName" style="margin-bottom: 10px; font-size: 1.3rem; padding-right: 30px;">Nama Produk</h3>
+            <p id="modalProdPrice" style="color: #ff69b4; font-weight: 700; font-size: 1.2rem; margin-bottom: 15px;">Rp 0</p>
+            
+            <!-- Video Review Container -->
+            <div class="video-container">
+                <video id="modalProdVideo" controls autoplay muted loop>
+                    <source src="" type="video/mp4">
+                    Browser kamu tidak mendukung pemutaran video ini.
+                </video>
+            </div>
+
+            <!-- Deskripsi Barang -->
+            <h4 style="font-size: 0.95rem; color: #ff69b4;">📝 Deskripsi Produk:</h4>
+            <div id="modalProdDesc" class="product-desc-text">Deskripsi produk estetik di sini...</div>
+            
+            <div id="modalActionContainer"></div>
+        </div>
+    </div>
+
+
+    <div class="page-container">
+
+        <!-- ==================== HALAMAN LOGIN ==================== -->
+        <div id="login" class="page active" style="max-width: 450px; margin: 0 auto;">
+            <div class="login-wrapper">
+                <div class="avatar-box" id="loginAvatar">🐱</div>
+                <h2>Welcome Back, Cutie!</h2>
+                <p id="loginHint" style="font-size: 0.9rem; color: #a1887f; margin-bottom: 25px;">Login pelanggan: <b>Password terserah</b></p>
+                
+                <div class="role-selector">
+                    <button type="button" id="roleCustomer" class="role-btn selected" onclick="selectRole('customer')">🛍️ Pelanggan</button>
+                    <button type="button" id="roleAdmin" class="role-btn" onclick="selectRole('admin')">👑 Admin</button>
+                </div>
+
+                <form onsubmit="event.preventDefault(); handleLogin();">
+                    <div class="form-group-cute">
+                        <label>Username</label>
+                        <input type="text" id="loginUser" class="input-cute" style="text-align: center;" placeholder="Masukkan username" required>
+                    </div>
+                    <div class="form-group-cute">
+                        <label>Password</label>
+                        <input type="password" id="loginPass" class="input-cute" style="text-align: center;" placeholder="Masukkan password bebas" required>
+                    </div>
+                    <button type="submit" class="btn-cute" style="width: 100%; margin-top: 10px;">
+                        Masuk Sekarang 💕
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ==================== HALAMAN PELANGGAN ==================== -->
+        <div id="customer" class="page">
+            <h2 style="margin-bottom: 5px;">✨ Gadget Aesthetic Catalog</h2>
+            <p style="font-size: 0.9rem; color: #a1887f; margin-bottom: 25px;">Klik pada kartu produk untuk melihat <b>Video Review & Detail Deskripsi</b>! 🎀</p>
+            <div class="catalog-grid" id="customerCatalog"></div>
+        </div>
+
+        <!-- ==================== HALAMAN PANEL ADMIN ==================== -->
+        <div id="admin" class="page">
+            <h2 style="margin-bottom: 5px;">🎀 Panel Kontrol Administrator</h2>
+            <p style="font-size: 0.9rem; color: #a1887f; margin-bottom: 25px;">Manajemen produk toko terintegrasi secara real-time.</p>
+            
+            <div class="admin-grid">
+                <div>
+                    <h3 style="font-size: 1.15rem; margin-bottom: 15px; color: #ff69b4;">✨ Tambah Produk Baru</h3>
+                    <form onsubmit="event.preventDefault(); addNewProductAdmin();">
+                        <div class="form-group-cute"><label>Nama Gadget</label><input type="text" id="adminProdName" class="input-cute" placeholder="Contoh: Apple Watch Peach" required></div>
+                        <div class="form-group-cute"><label>Harga (Rp)</label><input type="number" id="adminProdPrice" class="input-cute" placeholder="Contoh: 6500000" required></div>
+                        <div class="form-group-cute"><label>URL Gambar</label><input type="url" id="adminProdImg" class="input-cute" placeholder="https://..." required></div>
+                        <div class="form-group-cute"><label>Deskripsi Produk</label><input type="text" id="adminProdDesc" class="input-cute" placeholder="Tulis deskripsi singkat barang..." required></div>
+                        <div class="form-group-cute"><label>URL Video Review (MP4)</label><input type="url" id="adminProdVideo" class="input-cute" placeholder="https://www.w3schools.com/html/mov_bbb.mp4" required></div>
+                        <button type="submit" class="btn-cute" style="width: 100%;">Simpan ke Database Toko 🌸</button>
+                    </form>
+                    <h3 style="font-size: 1.15rem; margin: 25px 0 15px 0; color: #ff69b4;">📜 Riwayat Transaksi Masuk</h3>
+                    <div class="history-list" id="transactionHistory">
+                        <p style="font-size:0.85rem; color:#a1887f; text-align:center;">Belum ada penjualan hari ini 💸</p>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="font-size: 1.15rem; margin-bottom: 15px; color: #ff69b4;">📊 Daftar Barang Gudang (<span id="adminTotalCount">5</span> Items)</h3>
+                    <div id="adminProductList"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentRole = 'customer'; 
+
+        // Video sampel gratis yang aman diputar langsung di web
+        const sampleVid = "https://assets.mixkit.co/videos/preview/mixkit-girl-in-neon-light-holding-a-smartphone-40342-large.mp4";
+        const sampleVid2 = "https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-woman-typing-on-a-laptop-42322-large.mp4";
+
+        let databaseProducts = [
+            { id: 1, name: "iPhone Coquette Pink", price: 19500000, img: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500", desc: "iPhone dengan balutan warna pink pastel edisi terbatas. Sangat cocok dipadukan dengan case coquette ribbon kesukaanmu! Kamera super jernih, performa kencang.", video: sampleVid },
+            { id: 2, name: "Laptop Pastel Purple", price: 15000000, img: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=500", desc: "Laptop tipis nan estetik berwarna ungu pastel. Didesain khusus untuk para content creator cewek kue yang butuh device ringan namun bertenaga tinggi.", video: sampleVid2 },
+            { id: 3, name: "Headphone Soft Cream", price: 3200000, img: "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=500", desc: "Suara bass lembut dengan peredam kebisingan aktif luar biasa. Busanya empuk seperti marshmallow, tidak bikin telinga sakit dipakai seharian mendengarkan musik.", video: sampleVid },
+            { id: 4, name: "iPad Air Rosegold", price: 11800000, img: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=500", desc: "iPad Air dengan warna Rosegold menawan. Sangat ideal untuk mencatat materi kuliah, menggambar digital art, ataupun menonton drama Korea favoritmu.", video: sampleVid2 },
+            { id: 5, name: "Cute Wireless Mouse Pink", price: 450000, img: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=500", desc: "Mouse tanpa kabel berbentuk ergonomis kecil yang pas di genggaman. Klik
